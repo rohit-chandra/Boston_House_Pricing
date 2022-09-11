@@ -7,7 +7,7 @@ from flask import Flask, request, app, jsonify, url_for, render_template
 app = Flask(__name__)
 
 # Losad the model
-regression_model = pickle.load(open("Boston_regression.pkl", "rb"))
+regression_model = pickle.load(open("boston_regression.pkl", "rb"))
 std_scaler = pickle.load(open("scaling.pkl", "rb"))
 
 @app.route("/")
