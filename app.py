@@ -12,10 +12,9 @@ std_scaler = pickle.load(open("scaling.pkl", "rb"))
 
 @app.route("/")
 def home():
-    return render_template("Home.html")
+    return render_template("home.html")
 
 @app.route("/predict_api", methods = ["POST"])
-
 def predict_api():
     data = request.json["data"]
     print(data)
@@ -30,6 +29,28 @@ def predict_api():
     print(output[0])
     
     return jsonify(output[0])
+    
+
+@app.route("/predict", methods = ["POST"])
+def predict():
+    """
+    predict the price from the HTML page
+    
+    """
+    # convert to float
+    # capture all the values from the HTML form
+    data = [float(x) for x in request.form.values()]
+    # perform scaling for those captured values
+    final_input = std_scaler.transform(np.array(data).reshape(1, -1))
+    print(final_input)
+    # prediction
+    output = regression_model.predict(final_input)[0]
+    
+    return render_template("home.html", prediction_text = f"The House Price Prediction is =  {output}")
+    
+    
+    
+    
     
 
 if __name__ == "__main__":
